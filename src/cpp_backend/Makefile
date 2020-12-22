@@ -1,7 +1,7 @@
 all:
 	@echo "This is a dummy to prevent running make without explicit target!"
 
-clean: remove_build_directories remove_vs_folder remove_doc remove_clion_build
+clean: remove_build_directories remove_vs_folder remove_clion_build
 	$(MAKE) -C lib/ clean
 
 # The folders and files that belong to CLion only
@@ -19,15 +19,9 @@ remove_build_directories:
 remove_vs_folder:
 	rm -rf .vs/
 
-remove_doc:
-	rm -rf doc
-
 # Get rid of everything that might be left for whatever reason, then compile from scratch
-compile: remove_build_directories doc
+compile: remove_build_directories
 	mkdir -p build/
 	cd build/ && cmake -DCMAKE_BUILD_TYPE=Release ..
 	$(MAKE) -C build/
 	$(MAKE) -C build/ install
-
-doc:
-	doxygen Doxyfile
