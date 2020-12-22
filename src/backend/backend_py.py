@@ -25,7 +25,7 @@ def type_cast(array:np.array, type:str) -> np.array:
 
 def load_sparse_matrix(data_dir:str, name:str) -> (np.array, np.array, np.array, np.array):
   '''
-  load data from given directory
+  load sparse matrix data from given directory
   Parameters:
     - data_dir: path to folder with data [String]
     - name: start of filename [String]
@@ -44,7 +44,7 @@ def load_sparse_matrix(data_dir:str, name:str) -> (np.array, np.array, np.array,
 
 def to_sparse_matrix(data:np.array, indices:np.array, indptr:np.array, shape:np.array) -> object:
   '''
-  makes SparseMatrix from given parameters
+  makes scipy.sparse.csr_matrix from given parameters
   Parameters:
     - data: array with values of SparseMatrix [numpy.array]
     - indices: array with indices of SparseMatrix [numpy.array]
