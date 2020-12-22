@@ -15,7 +15,7 @@ def run():
     runs the code
     '''
     ## data source folder
-    data_dir = "data/data_debug/"
+    data_dir = "data/data_small/"
     ## load values, indices and indptr of respective data
     values, indices, indptr, shape = b.load_sparse_matrix(data_dir, "P")
     ## load all other parameters
