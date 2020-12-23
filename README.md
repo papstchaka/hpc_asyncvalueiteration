@@ -71,7 +71,7 @@ sudo apt-get install cmake gcc clang gdb built-essential
 ```
 > Install python libraries that are used by running
 ```cmd
-pip install numpy scipy tqdm matplotlib cffi pytest
+pip install cffi matplotlib numpy pytest scipy tqdm
 ```
 
 <br/><br/>
