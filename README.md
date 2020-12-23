@@ -1,5 +1,9 @@
 # hpc_asyncvalueiteration
 
+This repositoriy is directly related to <a href='https://www.ei.tum.de/ldv/startseite/' target='_blank'>`Lehrstuhl für Datenverarbeitung`</a> course <a href='https://www.ei.tum.de/ldv/lehre/high-performance-computing-fuer-maschinelle-intelligenz/' target='_blank'>`High Performance Computing for machine intelligence`</a> at TU Munich. Goal of the course was to use parallelism in combination with C++ to speed-up different kinds of algorithms. First, algorithms were implemented using multiple threads on one single machine, later on - using <a href='https://www.openmp.org/' target='_blank'>`OpenMP`</a> and <a href='https://www.open-mpi.org/' target='_blank'>`OpenMPI`</a> - on mulitple machines."
+
+<br/><br/>
+
 -------
 
 ## Goal
@@ -56,5 +60,25 @@ The insecurity to reach the `desired star` performing the `chosen jump` can be s
 
 -------
 
+## Requirements
+
+### Recommended environment for compiling are <a href="https://docs.microsoft.com/en-us/windows/wsl/about" target="_blank">`Windows Subsystem for Linux`</a> or any other `linux-based` operating system!
+
+> Install `cmake`, `gcc`, `clang`, `gdb` and `build-essential` by running
+```cmd
+sudo apt-get update
+sudo apt-get install cmake gcc clang gdb built-essential
+```
+> Install python libraries that are used by running
+```cmd
+pip install numpy scipy tqdm matplotlib cffi pytest
+```
+
+<br/><br/>
+
+-------
+
 ## Supporting developers:
-> -   <a href="https://github.com/papstchaka" target="_blank">`Alexander Christoph`</a>
+> -   <a href="https://github.com/papstchaka" target="_blank">`Alexander Christoph`</a> [implementation]
+> -   <a href="https://www.ei.tum.de/ldv/team/wissenschaftliche-mitarbeiter/martin-gottwald/" target="_blank">`Martin Gottwald`</a> [concept / instructor]
+> -   <a href="https://www.ei.tum.de/ldv/team/wissenschaftliche-mitarbeiter/alice-hein/" target="_blank">`Alice Hein`</a> [concept / instructor]
