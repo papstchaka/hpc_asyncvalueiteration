@@ -8,7 +8,7 @@ contains all `include` files (Header) for project. Maybe needs a change for othe
 
 ## <a href='Eigen/' target='_blank'>`Eigen/`</a>
 
-contains all files that are this version of <a href='http://eigen.tuxfamily.org/index.php?title=Main_Page' target='_blank'>`Eigen`</a> needs to work properly
+contains all files that this version of <a href='http://eigen.tuxfamily.org/index.php?title=Main_Page' target='_blank'>`Eigen`</a> needs to work properly
 
 <br/><br/>
 
