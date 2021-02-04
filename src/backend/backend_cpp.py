@@ -94,15 +94,17 @@ def async_vi(V:np.array, PI:np.array, values:np.array, indices:np.array, indptr:
   ## yes, C-pointer in python! Print them to the console if you like ;)
 
   ## check dtypes of values, indptr and indices
-  if values.dtype != np.double:
-    raise TypeError("Datatype missmatch for values of probability matrix.")
+  if values.dtype != V.dtype != np.float32:
+    raise TypeError("Datatype missmatch for values of probability matrix and V.")
   if indptr.dtype != indices.dtype != np.int:
     raise TypeError("Datatype missmatch for indptr and indices of probability matrix.")
+  if PI.dtype != np.int32:
+    raise TypeError("Datatype missmatch for PI.")
 
   ## cast V, PI, values, indptr and indices to C pointers
-  V_ptr = _ffi.cast("double*", V.ctypes.data)
-  PI_ptr = _ffi.cast("double*", PI.ctypes.data)
-  values_ptr = _ffi.cast("double*", values.ctypes.data)
+  V_ptr = _ffi.cast("float*", V.ctypes.data)
+  PI_ptr = _ffi.cast("int*", PI.ctypes.data)
+  values_ptr = _ffi.cast("float*", values.ctypes.data)
   indices_ptr = _ffi.cast("int*", indices.ctypes.data)
   indptr_ptr = _ffi.cast("int*", indptr.ctypes.data)
 

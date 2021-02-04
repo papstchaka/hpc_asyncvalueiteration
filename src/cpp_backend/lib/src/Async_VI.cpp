@@ -63,13 +63,13 @@ namespace Backend
    * Helper function to calculate the value for all action in a given state
    * @param probabilities: SparseMatrix with all probabilities for all states and actions [Eigen::Ref<SpMat>]
    * @param state: current state [Integer]
-   * @param V: current values [Eigen::Ref<vec>]
+   * @param V: current values [Eigen::Ref<vecF>]
    * @param nA: number of theoretical possible actions [const unsigned integer&]
    * @param n_stars: number of stars [const unsigned integer&]
    * @param alpha: discount factor - between 0 and 1, close to 1 [const float&]
    * @return A: cost array for all actions for this state [vec]
    */
-  vec one_step_lookahead(Eigen::Ref<SpMat> probabilities, int state, Eigen::Ref<vec> V, const unsigned int& nA, const unsigned int& n_stars, const float& alpha)
+  vecF one_step_lookahead(Eigen::Ref<SpMat> probabilities, int state, Eigen::Ref<vecF> V, const unsigned int& nA, const unsigned int& n_stars, const float& alpha)
   {
     // cut that piece of data from probability matrix that contains all actions for given state
     SpMat slice = probabilities.middleRows(state * nA, nA);
@@ -85,7 +85,7 @@ namespace Backend
         }
     }
     // init A as zero-array as long as actual possible actions for current state
-    vec A(actions);
+    vecF A(actions);
     A.fill(0.0);
     // make it parallel
     #pragma omp parallel for
@@ -108,15 +108,15 @@ namespace Backend
   }
 
   /**
-   * Same as in the C++ version, but using python
-   * @param V: value array [vec]
-   * @param PI: policy array [vec]
+   * Same as in the Python version, but using C++
+   * @param V: value array [vecF]
+   * @param PI: policy array [vecI]
    * @param probabilities: SparseMatrix with all probabilities for all states and actions [SpMat]
    * @param n_stars: number of stars [const unsigned integer]
    * @param nS: number of states [const unsigned integer]
    * @param nA: number of actions [const unsigned integer]
    */
-  void async_vi(Eigen::Ref<vec> V, Eigen::Ref<vec> PI, Eigen::Ref<SpMat> probabilities, const unsigned int n_stars, const unsigned int nS, const unsigned int nA)
+  void async_vi(Eigen::Ref<vecF> V, Eigen::Ref<vecI> PI, Eigen::Ref<SpMat> probabilities, const unsigned int n_stars, const unsigned int nS, const unsigned int nA)
   {
     // start timer. to measure the time
     auto t0 = std::chrono::system_clock::now();
@@ -125,7 +125,7 @@ namespace Backend
     // init tolerance, discount factor and delta
     const double tolerance = 1e-6;
     const float alpha = 0.99;
-    double delta;
+    float delta;
     // count the required epochs
     unsigned int epochs = 0;
 
@@ -139,9 +139,9 @@ namespace Backend
         for (unsigned int state = 0; state < nS; state++)
         {
             // calculate costs for this state
-            vec A = one_step_lookahead(probabilities, state, V, nA, n_stars, alpha);
+            vecF A = one_step_lookahead(probabilities, state, V, nA, n_stars, alpha);
             // init index of minimal value in A
-            vec::StorageIndex minIdx;
+            vecI::StorageIndex minIdx;
             // get minimal value of A
             float minOfA = A.minCoeff(&minIdx);
             // calculate delta of new value for this state with existing one
@@ -159,9 +159,9 @@ namespace Backend
 
   /**
    * overloads async_vi to initialize the data
-   * @param V: double pointer of value array [double*]
-   * @param PI: double pointer of policy array [double*]
-   * @param values: double pointer of values of SparseMatrix [double*]
+   * @param V: float pointer of value array [float*]
+   * @param PI: int pointer of policy array [int*]
+   * @param values: float pointer of values of SparseMatrix [float*]
    * @param row_indices: int pointer of column indices of SparseMatrix [int*]
    * @param rowptr: int pointer of column pointers of SparseMatrix [int*]
    * @param nnz: number of non-zero elements of SparseMatrix [const unsigned integer]
@@ -173,13 +173,13 @@ namespace Backend
    *
    * \overload
    */
-  void async_vi(double* V, double* PI, double* values, int* row_indices, int* rowptr, const unsigned int nnz, const unsigned int cols, const unsigned int rows, const unsigned int n_stars, const unsigned int nS, const unsigned int nA)
+  void async_vi(float* V, int* PI, float* values, int* row_indices, int* rowptr, const unsigned int nnz, const unsigned int cols, const unsigned int rows, const unsigned int n_stars, const unsigned int nS, const unsigned int nA)
   {
     // don't use a row major format here: the continuous data from outside comes from row major format
     // and must be written transposed in col major matrix
     // map V, PI and the probability matrix
-    Eigen::Map<vec> v_map(V, nS);
-    Eigen::Map<vec> pi_map(PI, nS);
+    Eigen::Map<vecF> v_map(V, nS);
+    Eigen::Map<vecI> pi_map(PI, nS);
     Eigen::Map<SpMat> probabilities_map(rows, cols, nnz, rowptr, row_indices, values);
 
     // run the actual value iteration

@@ -20,7 +20,7 @@ def compile_interface(verbose:bool = True) -> object:
   ffi = FFI()
   ## more or less directly the content of "Interface.h", better would be to parse that file!
   ## use 3 quotes to format freely the C-Function and don't forget the ; in the end!
-  ffi.cdef("""void cffi_async_vi(double* V, double* PI, double* values, int* row_indices, int* rowptr, const unsigned int nnz, const unsigned int cols, const unsigned int rows, const unsigned int n_stars, const unsigned int nS, const unsigned int nA);""")
+  ffi.cdef("""void cffi_async_vi(float* V, int* PI, float* values, int* row_indices, int* rowptr, const unsigned int nnz, const unsigned int cols, const unsigned int rows, const unsigned int n_stars, const unsigned int nS, const unsigned int nA);""")
 
   ## now create the full glue code to your library
   ffi.set_source("cpp_interface",  ## name of the output C/C++ extension, name is not important, but use sth unique

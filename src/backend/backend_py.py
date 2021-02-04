@@ -18,7 +18,7 @@ def type_cast(array:np.array, type:str) -> np.array:
   if type == "int":
     return array.astype(np.int32)
   if type == "float":
-    return array.astype(np.float)
+    return array.astype(np.float32)
   if type == "double":
     return array.astype(np.double)
   return array
@@ -39,7 +39,7 @@ def load_sparse_matrix(data_dir:str, name:str) -> (np.array, np.array, np.array,
   indices = np.load(f"{data_dir}/{name}_indices.npy")
   data = np.load(f"{data_dir}/{name}_data.npy")
   shape = np.load(f"{data_dir}/{name}_shape.npy")
-  indptr, indices, data = type_cast(indptr, "int"), type_cast(indices, "int"), type_cast(data, "double")
+  indptr, indices, data = type_cast(indptr, "int"), type_cast(indices, "int"), type_cast(data, "float")
   return data, indices, indptr, shape
 
 def to_sparse_matrix(data:np.array, indices:np.array, indptr:np.array, shape:np.array) -> object:

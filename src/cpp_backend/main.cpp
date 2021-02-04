@@ -9,7 +9,7 @@
 int main(int argc, char *argv[])
 {
     // original values of probability matrix
-    std::vector<double> values({1. , 1. , 1. , 1. , 1. , 1. , 1. , 1. , 1. , 1. , 1. , 1. , 1. , 1. , 1. , 1. , 1. , 1. , 1. , 1. , 1. , 1. , 1. , 1. , 1. , 1. ,
+    std::vector<float> values({1. , 1. , 1. , 1. , 1. , 1. , 1. , 1. , 1. , 1. , 1. , 1. , 1. , 1. , 1. , 1. , 1. , 1. , 1. , 1. , 1. , 1. , 1. , 1. , 1. , 1. ,
                                 0.5, 0.5, 1. , 1. , 0.5, 0.5, 1. , 1. , 1. , 0.5, 0.5, 1. , 1. , 0.5, 0.5, 1. , 1. , 1. , 0.5, 0.5, 1. , 1. , 0.5, 0.5, 1. , 1. ,
                                 1. , 0.5, 0.5, 1. , 1. , 0.5, 0.5, 1. , 1. , 1. , 0.5, 0.5, 1. , 1. , 0.5, 0.5, 1. , 1. , 1. , 1. , 0.5, 0.5, 1. , 0.5, 0.5, 1. ,
                                 0.5, 0.5, 1. , 1. , 1. , 1. , 0.5, 0.5, 1. , 0.5, 0.5, 1. , 0.5, 0.5, 1. , 1. , 1. , 1. , 0.5, 0.5, 1. , 0.5, 0.5, 1. , 0.5, 0.5,
@@ -53,12 +53,12 @@ int main(int argc, char *argv[])
                                   82, 106, 108, 109, 106, 110, 111,  85,  87, 111,  85,  87,  85, 87,  89, 112,  85,  87, 111, 113, 114, 111, 115, 116,  90,  92,
                                   116,  90,  92,  90,  92,  94, 117,  90,  92, 116, 118, 119, 116, 120, 121,  95,  97, 121,  95,  97,  95,  97,  99, 122,  95,  97, 121, 123, 124, 121});
     // "correct" policy, for evaluation purposes
-    std::vector<double> pi_star({0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    std::vector<int> pi_star({0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
             0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 2, 0, 0, 1, 0, 2, 0, 0, 2, 1, 0,
             0, 0, 0, 0, 0, 0, 0, 1, 0, 2, 0, 0, 0, 1, 1, 0, 1, 1, 0, 2, 0, 1, 2, 1, 0, 0, 1, 0, 0, 0, 0, 0, 1, 3, 2, 0, 0});
     // init value and policy
-    std::vector<double> v;
-    std::vector<double> pi;
+    std::vector<float> v;
+    std::vector<int> pi;
     // fill
     for (int i=0; i < 125; i++)
     {
@@ -72,9 +72,9 @@ int main(int argc, char *argv[])
     // run asynchronous value iteration
     Backend::async_vi(v.data(), pi.data(), values.data(), rows.data(), row_pointer.data(), 290, 125, 500, n_stars, nS, nA);
     // init resulting "difference" of calculated policy and "correct" policy
-    std::vector<double> result;
+    std::vector<int> result;
     // calc "difference" vector, print sum of "difference" vector
-    std::transform(pi.begin(),pi.end(),pi_star.begin(),std::back_inserter(result),std::minus<double>());
+    std::transform(pi.begin(),pi.end(),pi_star.begin(),std::back_inserter(result),std::minus<int>());
     std::cout << "Difference between ground truth and calculated policy is " << std::accumulate(result.begin(), result.end(), 0);
     return 0;
 }

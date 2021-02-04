@@ -31,8 +31,8 @@ def test_cpp_implement():
   nS, nA = parameters["NS"], parameters["max_controls"]
   n_stars = parameters["number_stars"]
   ## init Values and Policy
-  V = np.zeros(nS)
-  PI = np.zeros(nS)
+  V = np.zeros(nS).astype(np.float32)
+  PI = np.zeros(nS).astype(np.int32)
   ## copy to avoid call by reference issue
   v_py, pi_py = backend_py.async_vi(V.copy(), PI.copy(), values, indices, indptr, shape, n_stars, nS, nA, data_dir)
   v_cpp, pi_cpp = backend.async_vi(V.copy(), PI.copy(), values, indices, indptr, shape, n_stars, nS, nA, data_dir)

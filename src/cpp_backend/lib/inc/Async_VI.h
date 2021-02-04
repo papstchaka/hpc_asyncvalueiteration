@@ -9,8 +9,9 @@
 #include <omp.h> // for OpenMP (parallelization)
 
 // typedef's to save some time while coding
-typedef Eigen::SparseMatrix<double, Eigen::RowMajor> SpMat;
-typedef Eigen::VectorXd vec; // Standard Vector
+typedef Eigen::SparseMatrix<float, Eigen::RowMajor> SpMat;
+typedef Eigen::VectorXf vecF; // Standard Vector for Floats
+typedef Eigen::VectorXi vecI; // Standard Vector for Integers
 
 namespace Backend
 {
@@ -18,30 +19,30 @@ namespace Backend
    * Helper function to calculate the value for all action in a given state
    * @param probabilities: SparseMatrix with all probabilities for all states and actions [SpMat]
    * @param state: current state [Integer]
-   * @param V: current values [vec]
+   * @param V: current values [vecF]
    * @param nA: number of theoretical possible actions [const unsigned integer]
    * @param n_stars: number of stars [const unsigned integer]
    * @param alpha: discount factor - between 0 and 1, close to 1 [const float]
    * @return A: cost array for all actions for this state [vec]
    */
-  vec one_step_lookahead(SpMat probabilities, int state, vec V, const unsigned int nA, const unsigned int n_stars, const float alpha);
+  vecF one_step_lookahead(SpMat probabilities, int state, vecF V, const unsigned int nA, const unsigned int n_stars, const float alpha);
 
   /**
-   * Same as in the C++ version, but using python
-   * @param V: value array [vec]
-   * @param PI: policy array [vec]
+   * Same as in the Python version, but using C++
+   * @param V: value array [vecF]
+   * @param PI: policy array [vecI]
    * @param probabilities: SparseMatrix with all probabilities for all states and actions [SpMat]
    * @param n_stars: number of stars [const unsigned integer]
    * @param nS: number of states [const unsigned integer]
    * @param nA: number of actions [const unsigned integer]
    */
-  void async_vi(Eigen::Ref<Eigen::MatrixXd> V, Eigen::Ref<Eigen::MatrixXd> PI, const Eigen::Ref<SpMat> probabilities, const int n_stars, const unsigned int nS, const unsigned int nA);
+  void async_vi(Eigen::Ref<vecF> V, Eigen::Ref<vecI> PI, const Eigen::Ref<SpMat> probabilities, const int n_stars, const unsigned int nS, const unsigned int nA);
 
   /**
    * overloads async_vi to initialize the data
-   * @param V: double pointer of value array [double*]
-   * @param PI: double pointer of policy array [double*]
-   * @param values: double pointer of values of SparseMatrix [double*]
+   * @param V: float pointer of value array [float*]
+   * @param PI: int pointer of policy array [integer*]
+   * @param values: float pointer of values of SparseMatrix [float*]
    * @param row_indices: int pointer of column indices of SparseMatrix [int*]
    * @param rowptr: int pointer of column pointers of SparseMatrix [int*]
    * @param nnz: number of non-zero elements of SparseMatrix [const unsigned integer]
@@ -53,7 +54,7 @@ namespace Backend
    *
    * \overload
    */
-  void async_vi(double* V, double* PI, double* values, int* row_indices, int* rowptr, const unsigned int nnz, const unsigned int cols, const unsigned int rows, const unsigned int n_stars, const unsigned int nS, const unsigned int nA);
+  void async_vi(float* V, int* PI, float* values, int* row_indices, int* rowptr, const unsigned int nnz, const unsigned int cols, const unsigned int rows, const unsigned int n_stars, const unsigned int nS, const unsigned int nA);
 }
 
 #endif
